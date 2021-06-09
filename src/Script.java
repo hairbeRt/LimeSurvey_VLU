@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.regex.*;
 import java.io.PrintWriter;
 
+
 public class Script {
 
 	public static void main(String[] args) throws java.io.FileNotFoundException, java.io.UnsupportedEncodingException{
@@ -31,8 +32,8 @@ public class Script {
 
 			while (fileIn.hasNextLine()) {
 				tempstr = fileIn.nextLine();
-				// Matche für Anfang von Antwortenblock
-				if (Pattern.matches(".*Zusammenfassung für G[0-9]+Q[0-9]+.*", tempstr)) {
+				// Matche fÃ¼r Anfang von Antwortenblock
+				if (Pattern.matches(".*Zusammenfassung fÃ¼r G[0-9]+Q[0-9]+.*", tempstr)) {
 					if (tempstr.contains("[")) {
 						// Tabellenfrage
 						Matcher nameMatch = Pattern.compile(".*\\[(.*)\\].*").matcher(tempstr);
