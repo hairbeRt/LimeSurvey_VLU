@@ -158,7 +158,7 @@ def grade_to_tex(grade_label, data):
     return ''.join(grade_source)
 
 def tex_cleanup(s: str):
-    return s.replace(",","{,}").replace("∞", "$\\infty$").replace("%", "\\%")
+    return s.replace(",","{,}").replace("∞", "$\\infty$").replace("%", "\\%").replace("\"", "\'\'").replace("<","$<$").replace(">","$>$")
 
 def generate_tex(modul_name, semester, format_cfg, target_path, source_file):
     data = get_data(source_file)
