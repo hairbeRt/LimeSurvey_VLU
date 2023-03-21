@@ -10,4 +10,4 @@ if __name__ == '__main__':
     csv_files = glob.glob("data/*.csv")
     for file in csv_files:
         basic_filename = os.path.basename(file).replace(".csv","")
-        data_to_tex.generate_tex(basic_filename.replace("_", " "), "WS 21/22", "template/tex.cfg", "tex_docs/"+str(basic_filename)+".tex", file)
+        data_to_tex.generate_tex(basic_filename.replace("_", " "), "SS 22", "template/tex.cfg", "tex_docs/"+str(basic_filename)+".tex", file)

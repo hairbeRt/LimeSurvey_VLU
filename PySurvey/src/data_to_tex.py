@@ -1,6 +1,7 @@
 import csv
 import regex
 from functools import lru_cache
+from pylatex import utils as plu
 
 def get_data(fname):
     with open(str(fname), newline='', encoding='utf-8') as csvfile:
@@ -27,7 +28,7 @@ def text_to_tex(question_label, data):
         for text_part in [data[l][k] for l in range(1, len(data)-1) if data[l]]:
             if text_part:
                 texts.append(
-                    "\\framedText{"+str(tex_cleanup(text_part))+"}\n"
+                    "\\framedText{"+str(plu.escape_latex(text_part))+"}\n"
                 )
     else:
         return "Frage nicht gefunden: " + str(question_label)
@@ -143,22 +144,19 @@ def grade_to_tex(grade_label, data):
     )
     for key in keys_sorted:
         grade_source.append(
-            tex_cleanup(key) + " ,"
+            plu.escape_latex(key) + " ,"
         )
     grade_source.append(
         "}, ylabel={\\#votes}}\n        \\tikzstyle{every node}=[font=\\small]\n        \\begin{axis}[bar width=1cm]\n            \\addplot coordinates { "
     )
     for key in keys_sorted:
         grade_source.append(
-            "(" + tex_cleanup(key) + " ," + str(answer_histogram[key]) + ") "
+            "(" + plu.escape_latex(key) + " ," + str(answer_histogram[key]) + ") "
         )
     grade_source.append(
         "};\n        \\end{axis}\n    \\end{tikzpicture}\n\\end{minipage}\n\n"
     )
     return ''.join(grade_source)
-
-def tex_cleanup(s: str):
-    return s.replace(",","{,}").replace("∞", "$\\infty$").replace("%", "\\%").replace("\"", "\'\'").replace("<","$<$").replace(">","$>$")
 
 def generate_tex(modul_name, semester, format_cfg, target_path, source_file):
     data = get_data(source_file)
@@ -185,7 +183,8 @@ def generate_tex(modul_name, semester, format_cfg, target_path, source_file):
     with open(format_cfg, encoding="utf-8") as layout_commands:
         for line in layout_commands:
             command = line.partition(' ')
-            result_tex_source.append(command_functions[command[0]](command[2].strip()[1:-1], data)+"\n")
+            if not command[0][0] == "#":
+                result_tex_source.append(command_functions[command[0]](command[2].strip()[1:-1], data)+"\n")
             
 
     #End of document
